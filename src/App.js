@@ -19,7 +19,7 @@ function App() {
           </ul>
 
           <form className="form-inline my-2 my-lg-0">
-            <a className="btn btn-primary my-2 my-sm-0" href="http://prescriptiva.co/" >Saber Más</a>
+            <a className="btn btn-primary my-2 my-sm-0" href="http://prescriptiva.co/" >Know more</a>
           </form>
         </div>
       </nav>
