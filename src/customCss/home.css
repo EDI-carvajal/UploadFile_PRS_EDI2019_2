@@ -42,9 +42,22 @@ form.rigthform {
     font-size: 258%;
     z-index: 1;
     position: absolute;
-    margin-top: 13%;
+    margin-top: 19%;
     color: white;
     margin-left: 2%;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    height: 65px;
+}
+
+label.custom-file-label {
+    width: 81%;
 }
 
 @keyframes move-left-right {
@@ -61,6 +74,6 @@ form.rigthform {
 
 img.fondo {
     animation: move-left-right 3s infinite;
-    margin-top: -6%;
+    margin-top: -2%;
     margin-left: -13px;
 }

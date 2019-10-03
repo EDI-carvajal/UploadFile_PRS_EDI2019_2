@@ -3,12 +3,17 @@ import './App.css';
 import './customCss/home.css';
 
 import logop from './images/logo.png';
-import fondo from './images/descarga.svg'
+import fondo from './images/descarga.svg';
+import { FormControl } from 'react-bootstrap';
 
 function App() {
+
+
+
+
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top">
         <img src={logop} className="home-logo" alt="Logo" />
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -57,11 +62,22 @@ function App() {
           </div>
 
           <div className="form-group row">
-            <input type="file" className="form-control-file" id="exampleFormControlFile1" />
+            <form className="md-form">
+              <div className="file-field">
+
+                <label for="avatar"><h1> Choose a file</h1></label> <br></br>
+                <div className="btn">
+                  <input type="file" multiple="true" />
+                </div>
+
+
+
+              </div>
+            </form>
 
           </div>
 
-          <button type="submit" class="btn btn-primary mb-2">Send Information</button>
+          <button type="submit" className="btn btn-primary mb-2">Send Information</button>
 
 
         </form>
