@@ -37,29 +37,30 @@ form.rigthform {
 }
 
 .h2, h2 {
-    font-size: 2rem;
+    text-align: justify;
+    animation: move-left-right 3s infinite;
+    font-size: 258%;
     z-index: 1;
     position: absolute;
-    margin-top: 20%;
+    margin-top: 13%;
     color: white;
-    margin-left: 4%;
+    margin-left: 2%;
 }
 
 @keyframes move-left-right {
-    from {
-        transform: translate(5px, -30px);
-        -webkit-transform: translate(5px, -30px);
-        -o-transform: translate(-30px, 5px);
-        -moz-transform: translate(-30px, 5px);
+    0% {
+        transform: translate(-10px);
     }
-    to {
-        transform: translate( -30px, 5px);
-        -webkit-transform: translate( -30px, 5px);
-        -o-transform: translate( -30px, 5px);
-        -moz-transform: translate( -30px, 5px);
+    50% {
+        transform: translate(10px);
+    }
+    100% {
+        transform: translate(-10px);
     }
 }
 
 img.fondo {
     animation: move-left-right 3s infinite;
+    margin-top: -6%;
+    margin-left: -13px;
 }
