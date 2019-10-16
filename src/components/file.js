@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import logop from '../images/logo.png';
 import fondo from '../images/descarga.svg';
+import QRCode from 'react.qrcode.generator';
+import { Link } from 'react-router-dom';
+import { UncontrolledCarousel, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from "reactstrap";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Loader from 'react-loader-spinner'
+
 
 
 class File extends Component {
@@ -16,8 +22,18 @@ class File extends Component {
     especificamente en este componente*/}
         this.state = {
             contenido: "",
-            fileName: ""
+            fileName: "",
+            modalIsopen: false,
+            prueba: "hola bb",
+            URL: "http://192.168.96.37:4500/",
+            file: null,
+            loader: false
         }
+
+        this.serviceKey = props.serviceKey;
+        this.token = props.token;
+
+
 
         console.log("hola" + this.props)
     }
@@ -27,55 +43,61 @@ class File extends Component {
 
 
 
+    toggleModal = value => {
+        this.setState({
+            modalIsopen: !this.state.modalIsopen
+        });
 
 
-    /*
-        getBase64(file) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file[0]);
-            reader.onload = function () {
-                console.log(reader.result);
-            };
-            reader.onerror = function (error) {
-                console.log('Error: ', error);
-            };
-        }
-    
-    */
-    /*
-        onChange(e) {
-            let files = e.target.files;
-    
-            const data = new FormData();
-            data.append('file', files[0]);
-            console.log(files[0])
-    
-            let options = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'multipart/form-data'
-                },
-                body: data
-    
-            }
-    
-    
-            fetch("http://localhost:5000/upload", options)
-                .then(response => response.json())
-                .then((responseJson) => {
-                    console.log("este es response " + responseJson)
-    
-                }).catch(error => console.log(error))
-    
-    
-        }
-    */
+    }
 
 
     onChange(e) {
 
         let files = e.target.files;
+
+        this.setState({
+            file: files
+
+        })
+
+
+
+
+
+    }
+
+    loaderFile() {
+        this.setState({
+            loader: true
+        })
+
+        var promise = Promise.resolve(this.sendFile())
+        const that = this
+
+
+        promise.then(function () {
+            if (that.state.loader == true) {
+                console.log("Hola pachito " + that.state.loader)
+                setTimeout(() => {
+                    that.setState({
+                        loader: false
+                    })
+
+                }, 2000)
+
+
+            }
+
+        })
+
+
+
+    }
+
+
+    sendFile() {
+        let files = this.state.file
 
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -102,7 +124,7 @@ class File extends Component {
 
                 console.log(options)
 
-                fetch("http://172.19.15.19:5000/enviar", options)
+                fetch(this.state.URL + "enviar", options)
                     .then(response => response.json())
                     .then((responseJson) => {
                         console.log("este es response " + responseJson.estado)
@@ -122,11 +144,94 @@ class File extends Component {
 
         toBase64(files[0])
 
+
     }
 
 
+    componentDidMount() {
+        console.log("montado")
+
+    }
+
+
+    /*
+        cambio() {
+            this.setState({
+                prueba: "melo bb"
+            })
+    
+            if (this.state.prueba !== "hola bb") {
+                this.download()
+            }
+    
+        }
+    
+    */
+
+    /*
+        QRGenerator(value) {
+    
+            if (value !== "hola bb") {
+                console.log("si  cambió" + this.state.prueba)
+                return <div className="HpQrcode" id="" >
+    
+                    <QRCode
+                        value={"" + this.state.prueba}
+                        size={200}
+                        level={'H'}
+                    />
+                </div >;
+    
+    
+            } else if (value == "hola bb") {
+                console.log("no cambio " + this.state.prueba)
+    
+                return <div className="HpQrcode" id="" >
+    
+                    <h1> Hola bb</h1>
+                </div >;
+            }
+        }
+    
+    */
+    /*
+        download() {
+    
+    
+            console.log("Estado actual" + this.state.prueba)
+            const canvas = document.querySelector('.HpQrcode > canvas');
+            const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            let downloadLink = document.createElement("a");
+            downloadLink.href = pngUrl;
+            downloadLink.download = "123456.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            console.log("Image", this.pngUrl)
+        }
+    */
+
+
+    loader() {
+
+        if (this.state.loader == false) {
+
+            return <div></div>
+        } else {
+            return <Loader type="ball-triangle" color="#00BFFF" height={100} width={100} timeout={7000}> </Loader>
+
+
+        }
+
+
+
+
+    }
+
 
     render() {
+
+
 
         return (
 
@@ -188,21 +293,21 @@ class File extends Component {
                                     <div className="btn">
                                         <input type="file" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
                                     </div>
-
-
-
                                 </div>
                             </form>
 
                         </div>
 
-                        <button type="submit" className="btn btn-primary mb-2">Send Information</button>
+                        <button type="button" className="btn btn-primary mb-2" onClick={this.loaderFile.bind(this)}>Send Information</button>
 
 
                     </form>
 
-
                 </div>
+
+                {this.loader()}
+
+
             </div >
         );
     }

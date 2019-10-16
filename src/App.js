@@ -5,6 +5,7 @@ import './customCss/home.css';
 import logop from './images/logo.png';
 import fondo from './images/descarga.svg';
 
+
 import File from './components/file'
 
 
@@ -21,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
