@@ -11,6 +11,7 @@
     "react-dom": "^16.10.1",
     "react-file-uploader": "^1.0.0",
     "react-loader-spinner": "^3.1.4",
+    "react-notifications": "^1.4.3",
     "react-router": "^5.1.2",
     "react-scripts": "3.1.2",
     "react.qrcode.generator": "0.0.3",

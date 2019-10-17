@@ -7,6 +7,9 @@ import { UncontrolledCarousel, Modal, ModalBody, ModalFooter, ModalHeader, Alert
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from 'react-loader-spinner'
 
+import 'react-notifications/lib/notifications.css'
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
 
 
 class File extends Component {
@@ -26,8 +29,13 @@ class File extends Component {
             modalIsopen: false,
             prueba: "hola bb",
             URL: "http://192.168.96.37:4500/",
+            URL1: 'https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/',
             file: null,
-            loader: false
+            loader: false,
+            company: "",
+            email: "",
+            descripcion: ""
+
         }
 
         this.serviceKey = props.serviceKey;
@@ -67,6 +75,30 @@ class File extends Component {
 
     }
 
+    input1(e) {
+        this.setState({
+            company: e.target.value
+        })
+        console.log(e.target.value)
+
+    }
+
+    input2(e) {
+        this.setState({
+            email: e.target.value
+        })
+        console.log(e.target.value)
+
+    }
+    input3(e) {
+        this.setState({
+            descripcion: e.target.value
+        })
+        console.log(e.target.value)
+
+    }
+
+
     loaderFile() {
         this.setState({
             loader: true
@@ -79,10 +111,16 @@ class File extends Component {
         promise.then(function () {
             if (that.state.loader == true) {
                 console.log("Hola pachito " + that.state.loader)
+
+
                 setTimeout(() => {
                     that.setState({
                         loader: false
                     })
+
+                    document.getElementById("fileinput").value = "";
+
+
 
                 }, 2000)
 
@@ -97,6 +135,8 @@ class File extends Component {
 
 
     sendFile() {
+
+        /*
         let files = this.state.file
 
         const toBase64 = file => new Promise((resolve, reject) => {
@@ -143,6 +183,39 @@ class File extends Component {
 
 
         toBase64(files[0])
+
+        */
+
+
+
+        let data1 = {
+            'toEmails': "cts.prescriptiva@carvajal.com", 'subect': "Prescriptiva_UploadFile", 'message': "Subí mi información a su plataforma, deseo que se contacten conmigo"
+        }
+        console.log("+ mira la data" + data1.toEmails)
+        let options1 = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data1)
+
+        }
+
+        if (data1 !== null && options1 !== null) {
+            console.log("ahi vamos")
+
+            fetch('https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/', options1)
+                .then(response => response.json())
+                .then((responseJson) => {
+                    console.log("este es response " + responseJson.estado)
+
+
+
+                }).catch(error => console.log(error))
+
+        }
+
+
 
 
     }
@@ -214,11 +287,17 @@ class File extends Component {
 
     loader() {
 
+        /**timeout={30000} */
+
         if (this.state.loader == false) {
 
-            return <div></div>
+            return <div className="loader"></div>
         } else {
-            return <Loader type="ball-triangle" color="#00BFFF" height={100} width={100} timeout={7000}> </Loader>
+            return <div className="loader">
+                <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} > </Loader>
+                <h1>Enviando información</h1>
+            </div>
+
 
 
         }
@@ -265,14 +344,14 @@ class File extends Component {
                             <label for="inputPassword3" className="col-sm-4 col-form-label"><h1>
                                 Company name </h1></label>
                             <div className="col-sm-10">
-                                <input type="text" class="form-control" id="inputPassword3" placeholder="Company name" />
+                                <input type="text" class="form-control" id="inputPassword3" placeholder="Company name" onChange={this.input1.bind(this)} />
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label for="inputEmail3" class="col-sm-4 col-form-label"><h1> Email </h1></label>
                             <div className="col-sm-10" >
-                                <input type="email" className="form-control" id="inputEmail3" placeholder="Email" />
+                                <input type="email" className="form-control" id="inputEmail3" placeholder="Email" onChange={this.input2.bind(this)} />
                             </div>
                         </div>
 
@@ -281,7 +360,7 @@ class File extends Component {
                         <div className="form-group row">
                             <label for="exampleFormControlTextarea1" className="col-sm-4 col-form-label"><h1> Description </h1></label>
                             <div className="col-sm-10">
-                                <textarea className="form-control" id="exampleFormControlTextarea1" rows="8"></textarea>
+                                <textarea className="form-control" id="exampleFormControlTextarea1" rows="8" onChange={this.input3.bind(this)}></textarea>
                             </div>
                         </div>
 
@@ -291,7 +370,7 @@ class File extends Component {
 
                                     <label for="avatar"><h1> Choose a file</h1></label> <br></br>
                                     <div className="btn">
-                                        <input type="file" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
+                                        <input type="file" id="fileinput" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
                                     </div>
                                 </div>
                             </form>
