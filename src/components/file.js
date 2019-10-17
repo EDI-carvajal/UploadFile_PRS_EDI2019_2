@@ -122,15 +122,16 @@ class File extends Component {
 
 
                     setTimeout(() => {
-                        that.setState({
-                            loader: false
-                        })
 
                         document.getElementById("fileinput").value = "";
                         document.getElementById("inputCompany").value = "";
                         document.getElementById("inputEmail3").value = "";
                         document.getElementById("exampleFormControlTextarea1").value = "";
                         NotificationManager.success("Success message", "The information was sent successfully", 5000)
+
+                        that.setState({
+                            loader: false
+                        })
 
                     }, 2000)
 
@@ -153,77 +154,32 @@ class File extends Component {
 
         let files = this.state.file
 
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
 
-            console.log("hola bb" + file.name)
-            var dato = file.name;
-            reader.readAsDataURL(file);
-            reader.onload = (() => {
+        const reader = new FileReader();
 
-                let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+        console.log("hola bb" + files[0].name)
+        var dato = files[0].name;
+        reader.readAsDataURL(files[0]);
+        reader.onload = (() => {
 
-
-                let data = { 'contenido': encoded, 'filename': dato }
-                let options = {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-
-                }
+            let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
 
 
-                console.log(options)
+            let data = { 'contenido': encoded, 'filename': dato }
+            let options = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
 
-                fetch(this.state.URL + "enviar", options)
-                    .then(response => response.json())
-                    .then((responseJson) => {
-                        console.log("este es response " + responseJson.estado)
-
-
-
-                    }).catch(error => console.log(error))
-
-
-
-                console.log(encoded)
-                console.log("mira ve" + dato)
-            });
-            reader.onerror = error => reject(error);
-        });
+            }
 
 
-        toBase64(files[0])
+            console.log(options)
 
-
-
-
-
-        let data1 = {
-            "toEmails": [
-                "cts.prescriptiva@carvajal.com"],
-            "subject": "Update-File",
-            "message": "Subí mi información a u su plataforma deseo que se contacten conmigo, mi email es " + this.state.email + " soy de la empresa" + this.state.company + " y  " + this.state.descripcion + " el nombre del archivo es " + files[0].name
-        }
-        console.log("+ mira la data" + data1.toEmails)
-        let options1 = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data1)
-
-        }
-        if (data1 !== null && options1 !== null && files !== null) {
-
-
-
-            console.log("ahi vamos")
-
-            fetch('https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/', options1)
+            fetch(this.state.URL + "enviar", options)
                 .then(response => response.json())
                 .then((responseJson) => {
                     console.log("este es response " + responseJson.estado)
@@ -232,7 +188,52 @@ class File extends Component {
 
                 }).catch(error => console.log(error))
 
-        }
+
+
+            console.log(encoded)
+            console.log("mira ve" + dato)
+        });
+
+
+
+        /*toBase64(files[0])*/
+
+
+
+
+        /*
+                let data1 = {
+                    "toEmails": [
+                        "cts.prescriptiva@carvajal.com"],
+                    "subject": "Update-File",
+                    "message": "Subí mi información a u su plataforma deseo que se contacten conmigo, mi email es " + this.state.email + " soy de la empresa" + this.state.company + " y  " + this.state.descripcion + " el nombre del archivo es " + files[0].name
+                }
+                console.log("+ mira la data" + data1.toEmails)
+                let options1 = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data1)
+        
+                }
+                if (data1 !== null && options1 !== null && files !== null) {
+        
+        
+        
+                    console.log("ahi vamos")
+        
+                    fetch('https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/', options1)
+                        .then(response => response.json())
+                        .then((responseJson) => {
+                            console.log("este es response " + responseJson.estado)
+        
+        
+        
+                        }).catch(error => console.log(error))
+        
+                }
+                */
 
 
     }
