@@ -100,34 +100,48 @@ class File extends Component {
 
 
     loaderFile() {
-        this.setState({
-            loader: true
-        })
-
-        var promise = Promise.resolve(this.sendFile())
-        const that = this
-
-
-        promise.then(function () {
-            if (that.state.loader == true) {
-                console.log("Hola pachito " + that.state.loader)
-
-
-                setTimeout(() => {
-                    that.setState({
-                        loader: false
-                    })
-
-                    document.getElementById("fileinput").value = "";
 
 
 
-                }, 2000)
+        /*this.sendFile()
+*/
+
+        if (this.state.file !== null && this.state.email !== "" && this.state.company !== "" && this.state.descripcion !== "") {
+
+            this.setState({
+                loader: true
+            })
+
+            var promise = Promise.resolve(this.sendFile())
+            const that = this
 
 
-            }
+            promise.then(function () {
+                if (that.state.loader == true) {
+                    console.log("Hola pachito " + that.state.loader)
 
-        })
+
+                    setTimeout(() => {
+                        that.setState({
+                            loader: false
+                        })
+
+                        document.getElementById("fileinput").value = "";
+                        document.getElementById("inputCompany").value = "";
+                        document.getElementById("inputEmail3").value = "";
+                        document.getElementById("exampleFormControlTextarea1").value = "";
+                        NotificationManager.success("Success message", "The information was sent successfully", 5000)
+
+                    }, 2000)
+
+
+                }
+
+            })
+        } else {
+            NotificationManager.warning("Warning message", "Fill in all the information before sending it")
+
+        }
 
 
 
@@ -136,7 +150,7 @@ class File extends Component {
 
     sendFile() {
 
-        /*
+
         let files = this.state.file
 
         const toBase64 = file => new Promise((resolve, reject) => {
@@ -184,12 +198,15 @@ class File extends Component {
 
         toBase64(files[0])
 
-        */
+
 
 
 
         let data1 = {
-            'toEmails': "cts.prescriptiva@carvajal.com", 'subect': "Prescriptiva_UploadFile", 'message': "Subí mi información a su plataforma, deseo que se contacten conmigo"
+            "toEmails": [
+                "cts.prescriptiva@carvajal.com"],
+            "subject": "Update-File",
+            "message": "Subí mi información a u su plataforma deseo que se contacten conmigo, mi email es " + this.state.email + " soy de la empresa" + this.state.company + " y  " + this.state.descripcion + " el nombre del archivo es " + files[0].name
         }
         console.log("+ mira la data" + data1.toEmails)
         let options1 = {
@@ -200,8 +217,10 @@ class File extends Component {
             body: JSON.stringify(data1)
 
         }
+        if (data1 !== null && options1 !== null && files !== null) {
 
-        if (data1 !== null && options1 !== null) {
+
+
             console.log("ahi vamos")
 
             fetch('https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/', options1)
@@ -214,8 +233,6 @@ class File extends Component {
                 }).catch(error => console.log(error))
 
         }
-
-
 
 
     }
@@ -315,6 +332,8 @@ class File extends Component {
         return (
 
             <div>
+                <NotificationContainer></NotificationContainer>
+
 
                 <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top">
                     <img src={logop} className="home-logo" alt="Logo" />
@@ -341,10 +360,10 @@ class File extends Component {
                     <form className="rigthform">
 
                         <div className="form-group row">
-                            <label for="inputPassword3" className="col-sm-4 col-form-label"><h1>
+                            <label for="inputCompany" className="col-sm-4 col-form-label"><h1>
                                 Company name </h1></label>
                             <div className="col-sm-10">
-                                <input type="text" class="form-control" id="inputPassword3" placeholder="Company name" onChange={this.input1.bind(this)} />
+                                <input type="text" class="form-control" id="inputCompany" placeholder="Company name" onChange={this.input1.bind(this)} />
                             </div>
                         </div>
 
