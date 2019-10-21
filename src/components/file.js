@@ -41,7 +41,7 @@ class File extends Component {
         this.serviceKey = props.serviceKey;
         this.token = props.token;
 
-
+        this.sendFile= this.sendFile.bind(this);
 
         console.log("hola" + this.props)
     }
@@ -149,9 +149,26 @@ class File extends Component {
     }
 
 
-    sendFile() {
+    sendFile(ev) {
 
+        ev.preventDefault();
+        const data = new FormData();
+        data.append('file', this.uploadInput.files[0]);
+        console.log("si llegue al send")
 
+        fetch('http://localhost:5000/enviar', {
+            method: 'POST',
+            body: data,
+          }).then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson);
+          })
+          .catch((error) => {
+            console.error(error);
+      
+          });
+      
+        /*
         let files = this.state.file
 
 
@@ -358,7 +375,7 @@ class File extends Component {
                     <h2>We transform data into strategies</h2>
                     <img src={fondo} className="fondo" alt="Logo" />
 
-                    <form className="rigthform">
+                    <form className="rigthform" onSubmit={this.sendFile}>
 
                         <div className="form-group row">
                             <label for="inputCompany" className="col-sm-4 col-form-label"><h1>
@@ -390,14 +407,14 @@ class File extends Component {
 
                                     <label for="avatar"><h1> Choose a file</h1></label> <br></br>
                                     <div className="btn">
-                                        <input type="file" id="fileinput" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
+                                        <input ref={(ref) => { this.uploadInput = ref; }} type="file" id="fileinput" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
                                     </div>
                                 </div>
                             </form>
 
                         </div>
 
-                        <button type="button" className="btn btn-primary mb-2" onClick={this.loaderFile.bind(this)}>Send Information</button>
+                        <button type="submit" className="btn btn-primary mb-2">Send Information</button>
 
 
                     </form>
