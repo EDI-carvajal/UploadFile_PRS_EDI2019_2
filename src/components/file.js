@@ -8,7 +8,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from 'react-loader-spinner'
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css'
+import Graphic from './graphics'
 
+var CanvasJSReact = require('./canvasjs.react');
+var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 
@@ -36,6 +40,8 @@ class File extends Component {
             email: "",
             descripcion: "",
             showDetails:false,
+            details:{'porCeldasVacias':0,'porFilasVacias':0,'numCeldasVacias':0,'numColVacias':0
+            ,'numDatosCorr':0,'numDatosMixtos':0,'numFilasRepetidas':0,'texto':''},
 
         }
 
@@ -166,13 +172,22 @@ class File extends Component {
           }).then((response) => response.json())
           .then((responseJson) => {
             console.log(responseJson);
-          })
+            let convert = parseFloat(responseJson.porFilasVacias)*100;
+            let porceldas=parseFloat(responseJson.porCeldasVacias)
+            this.setState({details:{'porCeldasVacias':porceldas,'porFilasVacias':convert,'numCeldasVacias':responseJson.numCeldasVacias,'numColVacias':responseJson.numColVacias,
+            'numDatosCorr':responseJson.numDatosCorr,'numDatosMixtos':responseJson.numDatosMixtos,'numFilasRepetidas':responseJson.numFilasRepetidas,
+            'numFilasVacias':responseJson.numFilasVacias,'texto':responseJson.texto
+        }},this.setState({showDetails:true}))
+        
+        })
           .catch((error) => {
             console.error(error);
       
           });
-      
-        /*
+
+
+
+/*
         let files = this.state.file
 
 
@@ -220,9 +235,7 @@ class File extends Component {
         /*toBase64(files[0])*/
 
 
-
-
-        /*
+/*
                 let data1 = {
                     "toEmails": [
                         "cts.prescriptiva@carvajal.com"],
@@ -254,7 +267,7 @@ class File extends Component {
                         }).catch(error => console.log(error))
         
                 }
-                */
+*/
 
 
     }
@@ -306,7 +319,7 @@ class File extends Component {
         }
     
     */
-    /*
+/*
         download() {
     
     
@@ -321,7 +334,7 @@ class File extends Component {
             document.body.removeChild(downloadLink);
             console.log("Image", this.pngUrl)
         }
-    */
+ */
 
 
     loader() {
@@ -432,7 +445,9 @@ class File extends Component {
             );
 
         }else
-        {
+        {       
+
+            console.log(Graphic)
             return (
 
                 <div>
@@ -454,9 +469,15 @@ class File extends Component {
                             </form>
                         </div>
                     </nav>
+
+                  
+
+                    
+                   
+ 
+                    
     
-    
-    
+                <Graphic data={this.state.details}></Graphic>
                 </div >
             );
         }
