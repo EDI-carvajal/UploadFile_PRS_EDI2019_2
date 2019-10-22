@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 import { UncontrolledCarousel, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from "reactstrap";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from 'react-loader-spinner'
-
-import 'react-notifications/lib/notifications.css'
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css'
+
 
 
 
@@ -34,7 +34,8 @@ class File extends Component {
             loader: false,
             company: "",
             email: "",
-            descripcion: ""
+            descripcion: "",
+            showDetails:false,
 
         }
 
@@ -159,6 +160,9 @@ class File extends Component {
         fetch('http://localhost:5000/enviar', {
             method: 'POST',
             body: data,
+            headers:{
+                'Access-Control-Allow-Origin': 'http://localhost:5000'
+              }
           }).then((response) => response.json())
           .then((responseJson) => {
             console.log(responseJson);
@@ -345,87 +349,119 @@ class File extends Component {
 
     render() {
 
-
-
-        return (
-
-            <div>
-                <NotificationContainer></NotificationContainer>
-
-
-                <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top">
-                    <img src={logop} className="home-logo" alt="Logo" />
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent" >
-                        <ul className="navbar-nav mr-auto">
-                        </ul>
-
-                        <form className="form-inline my-2 my-lg-0">
-                            <a className="btn btn-primary my-2 my-sm-0" href="http://prescriptiva.co/" >Know More</a>
-                        </form>
-                    </div>
-                </nav>
-
+        if(this.state.showDetails==false)
+        {
+            return (
 
                 <div>
-
-                    <h2>We transform data into strategies</h2>
-                    <img src={fondo} className="fondo" alt="Logo" />
-
-                    <form className="rigthform" onSubmit={this.sendFile}>
-
-                        <div className="form-group row">
-                            <label for="inputCompany" className="col-sm-4 col-form-label"><h1>
-                                Company name </h1></label>
-                            <div className="col-sm-10">
-                                <input type="text" class="form-control" id="inputCompany" placeholder="Company name" onChange={this.input1.bind(this)} />
-                            </div>
-                        </div>
-
-                        <div className="form-group row">
-                            <label for="inputEmail3" class="col-sm-4 col-form-label"><h1> Email </h1></label>
-                            <div className="col-sm-10" >
-                                <input type="email" className="form-control" id="inputEmail3" placeholder="Email" onChange={this.input2.bind(this)} />
-                            </div>
-                        </div>
-
-
-
-                        <div className="form-group row">
-                            <label for="exampleFormControlTextarea1" className="col-sm-4 col-form-label"><h1> Description </h1></label>
-                            <div className="col-sm-10">
-                                <textarea className="form-control" id="exampleFormControlTextarea1" rows="8" onChange={this.input3.bind(this)}></textarea>
-                            </div>
-                        </div>
-
-                        <div className="form-group row">
-                            <form className="md-form">
-                                <div className="file-field">
-
-                                    <label for="avatar"><h1> Choose a file</h1></label> <br></br>
-                                    <div className="btn">
-                                        <input ref={(ref) => { this.uploadInput = ref; }} type="file" id="fileinput" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
-                                    </div>
-                                </div>
+                    
+    
+    
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top">
+                        <img src={logop} className="home-logo" alt="Logo" />
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+    
+                        <div className="collapse navbar-collapse" id="navbarSupportedContent" >
+                            <ul className="navbar-nav mr-auto">
+                            </ul>
+    
+                            <form className="form-inline my-2 my-lg-0">
+                                <a className="btn btn-primary my-2 my-sm-0" href="http://prescriptiva.co/" >Know More</a>
                             </form>
-
                         </div>
+                    </nav>
+    
+    
+                    <div>
+    
+                        <h2>We transform data into strategies</h2>
+                        <img src={fondo} className="fondo" alt="Logo" />
+    
+                        <form className="rigthform" onSubmit={this.sendFile}>
+    
+                            <div className="form-group row">
+                                <label for="inputCompany" className="col-sm-4 col-form-label"><h1>
+                                    Company name </h1></label>
+                                <div className="col-sm-10">
+                                    <input type="text" class="form-control" id="inputCompany" placeholder="Company name" onChange={this.input1.bind(this)} />
+                                </div>
+                            </div>
+    
+                            <div className="form-group row">
+                                <label for="inputEmail3" class="col-sm-4 col-form-label"><h1> Email </h1></label>
+                                <div className="col-sm-10" >
+                                    <input type="email" className="form-control" id="inputEmail3" placeholder="Email" onChange={this.input2.bind(this)} />
+                                </div>
+                            </div>
+    
+    
+    
+                            <div className="form-group row">
+                                <label for="exampleFormControlTextarea1" className="col-sm-4 col-form-label"><h1> Description </h1></label>
+                                <div className="col-sm-10">
+                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="8" onChange={this.input3.bind(this)}></textarea>
+                                </div>
+                            </div>
+    
+                            <div className="form-group row">
+                                <form className="md-form">
+                                    <div className="file-field">
+    
+                                        <label for="avatar"><h1> Choose a file</h1></label> <br></br>
+                                        <div className="btn">
+                                            <input ref={(ref) => { this.uploadInput = ref; }} type="file" id="fileinput" name="file_input" multiple="multiple" onChange={(e) => this.onChange(e)} />
+                                        </div>
+                                    </div>
+                                </form>
+    
+                            </div>
+    
+                            <button type="submit" className="btn btn-primary mb-2">Send Information</button>
+    
+    
+                        </form>
+    
+                    </div>
+    
+                    {this.loader()}
+    
+    
+                </div >
+            );
 
-                        <button type="submit" className="btn btn-primary mb-2">Send Information</button>
+        }else
+        {
+            return (
+
+                <div>
+                    
+    
+    
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top">
+                        <img src={logop} className="home-logo" alt="Logo" />
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+    
+                        <div className="collapse navbar-collapse" id="navbarSupportedContent" >
+                            <ul className="navbar-nav mr-auto">
+                            </ul>
+    
+                            <form className="form-inline my-2 my-lg-0">
+                                <a className="btn btn-primary my-2 my-sm-0" href="http://prescriptiva.co/" >Know More</a>
+                            </form>
+                        </div>
+                    </nav>
+    
+    
+    
+                </div >
+            );
+        }
 
 
-                    </form>
-
-                </div>
-
-                {this.loader()}
-
-
-            </div >
-        );
     }
 
 }
