@@ -61,52 +61,70 @@ class Graphic extends Component {
 		<div style={{marginTop:"5%"}}> 
 			<div class="row">
 				
-					<div class="column" style={{width:"50%",marginLeft:"2%"}}>
+					<div class="column" style={{width:"50%"}}>
 
-					<div style={{height:"40%",width:"100%"}}>
+					<div style={{height:"40%",width:"80%",marginLeft:"8%"}}>
 						<CanvasJSChart options = {options} />
 					</div>
 
-					<div style={{height:"40%",width:"100%",marginTop:"10%"}}>
-						<CanvasJSChart options = {test} />	
-					</div>
+
 
 					</div>
-					<div class="column">
+					<div class="column" style={{width:"50%"}}>
+						<div style={{height:"40%",width:"80%",marginLeft:"8%"}}>
+							<CanvasJSChart options = {test} />	
+						</div>
+					</div>
+			</div>
 
-						<h2 style={{color:"black",animation:"null",marginTop:"5%"}}>
-							Información
+					<div class="row">
+						<h2 className="listTittle">
+								Información
 						</h2>
-						<div style={{marginTop:"50%"}}>
-
-						
-							<h3 className="listDetails">
-								Número de celdas vacias : {data.numCeldasVacias}
-							</h3>
-							<h3 className="listDetails">
-								Número de columnas vacias : {data.numColVacias}
-							</h3>
-							<h3 className="listDetails">
-								Número de datos correlacionados : {data.numDatosCorr}
-							</h3>
-							<h3 className="listDetails">
-								Número de datos mixtos : {data.numDatosMixtos}
-							</h3>
-							<h3 className="listDetails">
-								Número de celdas de filas repetidas : {data.numFilasRepetidas}
-							</h3>
-							<h3 className="listDetails">
-								Número de filas vacias : {data.numFilasVacias}
-							</h3>
+						<div class="column" style={{marginTop:"9%",width:"50%"}}>
+									<h3 className="listDetails">
+										Número de celdas vacias : {data.numCeldasVacias}
+									</h3>
+									<h3 className="listDetails">
+										Número de columnas vacias : {data.numColVacias}
+									</h3>
+									<h3 className="listDetails">
+										Número de datos correlacionados : {data.numDatosCorr}
+									</h3>
+									<h3 className="listDetails">
+										Número de datos mixtos : {data.numDatosMixtos}
+									</h3>
+									<h3 className="listDetails">
+										Número de celdas de filas repetidas : {data.numFilasRepetidas}
+									</h3>
+									<h3 className="listDetails">
+										Número de filas vacias : {data.numFilasVacias}
+									</h3>
+						</div>
+						<div class="column"style={{marginTop:"9%",width:"50%"}}>
+							<h5 className="text">
+								{data.texto}
+							</h5>
 						</div>
 
 
+
 					</div>
+
+
+						
+
+
+
+					
+
+
+					
 			
 			</div>	
 
 
-		</div>
+
 		);
 	}
 }
