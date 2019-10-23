@@ -3,12 +3,14 @@ import logop from '../images/logo.png';
 import fondo from '../images/descarga.svg';
 import QRCode from 'react.qrcode.generator';
 import { Link } from 'react-router-dom';
-import { UncontrolledCarousel, Modal, ModalBody, ModalFooter, ModalHeader, Alert } from "reactstrap";
+import { UncontrolledCarousel,Modal,ModalBody, ModalFooter, ModalHeader, Alert,Button } from "reactstrap";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from 'react-loader-spinner'
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css'
-import Graphic from './graphics'
+import 'react-notifications/lib/notifications.css';
+import Graphic from './graphics';
+
+
 
 var CanvasJSReact = require('./canvasjs.react');
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -41,7 +43,9 @@ class File extends Component {
             descripcion: "",
             showDetails:false,
             details:{'porCeldasVacias':0,'porFilasVacias':0,'numCeldasVacias':0,'numColVacias':0
-            ,'numDatosCorr':0,'numDatosMixtos':0,'numFilasRepetidas':0,'texto':''},
+            ,'numDatosCorr':0,'numDatosMixtos':0,'numFilasRepetidas':0,'texto':[ ],
+            open:false,}
+
 
         }
 
@@ -54,6 +58,17 @@ class File extends Component {
     }
 
 
+    /*  Funciones el modal */ 
+openDetails = () => {
+    this.setState({ showDetails: true });
+};
+  onOpenModal = () => {
+    this.setState({ open: true });
+  };
+ 
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
 
 
 
@@ -172,12 +187,21 @@ class File extends Component {
           }).then((response) => response.json())
           .then((responseJson) => {
             console.log(responseJson);
-            let convert = parseFloat(responseJson.porFilasVacias)*100;
-            let porceldas=parseFloat(responseJson.porCeldasVacias)
-            this.setState({details:{'porCeldasVacias':porceldas,'porFilasVacias':convert,'numCeldasVacias':responseJson.numCeldasVacias,'numColVacias':responseJson.numColVacias,
-            'numDatosCorr':responseJson.numDatosCorr,'numDatosMixtos':responseJson.numDatosMixtos,'numFilasRepetidas':responseJson.numFilasRepetidas,
-            'numFilasVacias':responseJson.numFilasVacias,'texto':responseJson.texto
-        }},this.setState({showDetails:true}))
+            if(responseJson.estado=="No Excel")
+            {
+
+            }else
+            {
+                    this.setState({open:true})
+                    let convert = parseFloat(responseJson.porFilasVacias)*100;
+                    let porceldas=parseFloat(responseJson.porCeldasVacias)
+                    this.setState({details:{'porCeldasVacias':porceldas,'porFilasVacias':convert,'numCeldasVacias':responseJson.numCeldasVacias,'numColVacias':responseJson.numColVacias,
+                    'numDatosCorr':responseJson.numDatosCorr,'numDatosMixtos':responseJson.numDatosMixtos,'numFilasRepetidas':responseJson.numFilasRepetidas,
+                    'numFilasVacias':responseJson.numFilasVacias,'texto':responseJson.texto
+                }})
+
+            }
+
         
         })
           .catch((error) => {
@@ -437,7 +461,23 @@ class File extends Component {
                         </form>
     
                     </div>
-    
+
+
+                    <div>
+                        
+                            <Modal isOpen={this.state.open}>
+                                <ModalHeader >Analisis rapido</ModalHeader>
+                                     <ModalBody>
+                                         <h3 style={{fontSize:20}}>
+                                            El archivo que subio es un .xlsx, se realizo una evaluación rapida de su base de datos ¿Desea ver el analisis?  
+                                        </h3>
+                                    </ModalBody>
+                                <ModalFooter>
+                                <Button color="primary" onClick={this.openDetails}>Ver analisis</Button>{' '}
+                                <Button color="secondary" onClick={this.onCloseModal}>Cancelar</Button>
+                                </ModalFooter>
+                            </Modal>
+                    </div>
                     {this.loader()}
     
     

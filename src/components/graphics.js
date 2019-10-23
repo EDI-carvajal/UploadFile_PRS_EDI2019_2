@@ -103,7 +103,34 @@ class Graphic extends Component {
 						</div>
 						<div class="column"style={{marginTop:"9%",width:"50%"}}>
 							<h5 className="text">
-								{data.texto}
+								<ul>
+									<li>
+										{data.texto[0]+"."+data.texto[1]+"."}
+									</li>
+									<li>
+										{data.texto[2]+"."}
+									</li>
+									<li>
+										{data.texto[3]+"."+data.texto[4]+"."}
+									</li>
+									<li>
+										{data.texto[5]+"."}
+									</li>
+									<li>
+										{data.texto[6]+"."+data.texto[7]+"."}
+									</li>
+									<li>
+										{data.texto[8]+"."+data.texto[9]+"."}
+									</li>
+								</ul>
+								
+							
+								
+								
+								
+								
+						
+								
 							</h5>
 						</div>
 
