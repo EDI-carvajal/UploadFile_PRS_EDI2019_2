@@ -119,9 +119,7 @@ class Graphic extends Component {
 									<li>
 										{data.texto[6]+"."+data.texto[7]+"."}
 									</li>
-									<li>
-										{data.texto[8]+"."+data.texto[9]+"."}
-									</li>
+
 								</ul>
 								
 							
