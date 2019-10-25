@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CanvasJSReact from './canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
  
 class Graphic extends Component {
 	render() {
@@ -81,15 +82,12 @@ class Graphic extends Component {
 						<h2 className="listTittle">
 								Información
 						</h2>
-						<div class="column" style={{marginTop:"9%",width:"50%"}}>
+						<div class="column" style={{marginTop:"9%",width:"50%",paddingRight:"13%"}}>
 									<h3 className="listDetails">
 										Número de celdas vacias : {data.numCeldasVacias}
 									</h3>
 									<h3 className="listDetails">
 										Número de columnas vacias : {data.numColVacias}
-									</h3>
-									<h3 className="listDetails">
-										Número de datos correlacionados : {data.numDatosCorr}
 									</h3>
 									<h3 className="listDetails">
 										Número de datos mixtos : {data.numDatosMixtos}

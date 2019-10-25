@@ -5,7 +5,7 @@ import QRCode from 'react.qrcode.generator';
 import { Link } from 'react-router-dom';
 import { UncontrolledCarousel,Modal,ModalBody, ModalFooter, ModalHeader, Alert,Button } from "reactstrap";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
-import Loader from 'react-loader-spinner'
+import { Spinner } from 'reactstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import Graphic from './graphics';
@@ -177,22 +177,26 @@ openDetails = () => {
         const data = new FormData();
         data.append('file', this.uploadInput.files[0]);
         console.log("si llegue al send")
-
+        this.setState({loader:true})
         fetch('http://localhost:5000/enviar', {
             method: 'POST',
             body: data,
             headers:{
-                'Access-Control-Allow-Origin': 'http://localhost:5000'
+                'Access-Control-Allow-Origin': '*'
               }
           }).then((response) => response.json())
           .then((responseJson) => {
-            console.log(responseJson);
-            if(responseJson.estado=="No Excel")
-            {
 
+           
+            if(responseJson.Estado=='No Excel')
+            {
+                this.setState({loader:false})
+                NotificationManager.success('Success message', 'Archivo enviado con éxito');
             }else
             {
-                    this.setState({open:true})
+
+                    this.setState({loader:false},this.setState({open:true}))
+                    NotificationManager.success('Success message', 'Archivo enviado con éxito');
                     let convert = parseFloat(responseJson.porFilasVacias)*100;
                     let porceldas=parseFloat(responseJson.porCeldasVacias)
                     this.setState({details:{'porCeldasVacias':porceldas,'porFilasVacias':convert,'numCeldasVacias':responseJson.numCeldasVacias,'numColVacias':responseJson.numColVacias,
@@ -203,8 +207,11 @@ openDetails = () => {
             }
 
         
-        })
+        }
+        
+        )
           .catch((error) => {
+            NotificationManager.error('Error message', 'Ocurrio un error intente mas tarde')
             console.error(error);
       
           });
@@ -360,10 +367,10 @@ openDetails = () => {
         }
  */
 
-
+/*
     loader() {
 
-        /**timeout={30000} */
+        /**timeout={30000} 
 
         if (this.state.loader == false) {
 
@@ -383,7 +390,7 @@ openDetails = () => {
 
     }
 
-
+*/
     render() {
 
         if(this.state.showDetails==false)
@@ -455,8 +462,10 @@ openDetails = () => {
     
                             </div>
     
+                            <div style={{display:"inline"}}></div>
                             <button type="submit" className="btn btn-primary mb-2">Send Information</button>
-    
+                            {this.state.loader ?(<Spinner  style={{marginLeft:"5%"}}color="primary" />):(<h1 style={{display:'none'}}>"HOLA"</h1>)}
+                            
     
                         </form>
     
@@ -478,7 +487,7 @@ openDetails = () => {
                                 </ModalFooter>
                             </Modal>
                     </div>
-                    {this.loader()}
+                    {/*this.loader()*/}
     
     
                 </div >
@@ -487,7 +496,7 @@ openDetails = () => {
         }else
         {       
 
-            console.log(Graphic)
+          
             return (
 
                 <div>
