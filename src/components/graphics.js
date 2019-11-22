@@ -59,8 +59,8 @@ class Graphic extends Component {
 			}]
 		}
 		return (
-		<div style={{marginTop:"5%"}}> 
-			<div class="row">
+		<div style={{marginTop:"8%"}}> 
+			<div class="row_flex">
 				
 					<div class="column" style={{width:"50%"}}>
 
@@ -78,11 +78,11 @@ class Graphic extends Component {
 					</div>
 			</div>
 
-					<div class="row">
+					<div class="row_flex">
 						<h2 className="listTittle">
 								Información
 						</h2>
-						<div class="column" style={{marginTop:"9%",width:"50%",paddingRight:"13%"}}>
+						<div class="column_flex">
 									<h3 className="listDetails">
 										Número de celdas vacias : {data.numCeldasVacias}
 									</h3>
@@ -99,7 +99,7 @@ class Graphic extends Component {
 										Número de filas vacias : {data.numFilasVacias}
 									</h3>
 						</div>
-						<div class="column"style={{marginTop:"9%",width:"50%"}}>
+						<div class="column_flex">
 							<h5 className="text">
 								<ul>
 									<li>
