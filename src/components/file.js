@@ -34,7 +34,7 @@ class File extends Component {
             fileName: "",
             modalIsopen: false,
             prueba: "hola bb",
-            URL: "http://192.168.96.37:4500/",
+            URL: "http://34.238.51.175:5000/",
             URL1: 'https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/',
             file: null,
             loader: false,
@@ -85,9 +85,10 @@ openDetails = () => {
     onChange(e) {
 
         let files = e.target.files;
+        console.log(files[0])
 
         this.setState({
-            file: files
+            file: files[0]
 
         })
 
@@ -172,13 +173,39 @@ openDetails = () => {
 
 
     sendFile(ev) {
+        console.log("ddddddd")
+
+        let file =this.state.file
+
+        if(file!==null && this.state.email === ""&& this.state.company === "" && this.state.descripcion ===""){
+            NotificationManager.warning('Warning  message', 'Ingrese los campos correspondientes', 5000)
+
+
+        }
+
+        if(file===null && this.state.email !== ""&& this.state.company !== "" && this.state.descripcion !==""){
+            NotificationManager.warning('Warning  message', 'Cargue el archivo a enviar', 5000)
+
+
+        }
+
+        if(file!==null && this.state.email !== ""&& this.state.company!== "" && this.state.descripcion !==""){
+
+            this.sendEmail()
+
+            
+
+        
+
 
         ev.preventDefault();
         const data = new FormData();
-        data.append('file', this.uploadInput.files[0]);
+        
+
+        data.append('file', file);
         console.log("si llegue al send")
         this.setState({loader:true})
-        fetch('http://localhost:5000/enviar', {
+        fetch(this.state.URL+'enviar', {
             method: 'POST',
             body: data,
             headers:{
@@ -186,6 +213,8 @@ openDetails = () => {
               }
           }).then((response) => response.json())
           .then((responseJson) => {
+              
+
 
            
             if(responseJson.Estado=='No Excel')
@@ -212,11 +241,15 @@ openDetails = () => {
         )
           .catch((error) => {
             NotificationManager.error('Error message', 'Ocurrio un error intente mas tarde')
-            console.error(error);
-      
+            this.setState({loader:false})
+
           });
 
+        }else if (file===null &&  this.state.email === ""&& this.state.company=== "" && this.state.descripcion ===""){
+            NotificationManager.warning('Warning  message', 'Elija el  archivo a enviar y llene los campos correspondientes', 5000)
 
+
+        } 
 
 /*
         let files = this.state.file
@@ -304,93 +337,48 @@ openDetails = () => {
     }
 
 
+    sendEmail(){
+        let data1 = {
+            "toEmails": [
+                "cts.prescriptiva@carvajal.com"],
+            "subject": "Upload-File",
+            "message": "Subí mi información a u su plataforma deseo que se contacten conmigo, mi email es " + this.state.email + " soy de la empresa" + this.state.company + " y  " + this.state.descripcion + " el nombre del archivo es " + this.state.file.name
+        }
+        console.log("+ mira la data" + data1.toEmails)
+        let options1 = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data1)
+
+        }
+
+
+
+            console.log("ahi vamos")
+
+            fetch('https://0gqxxhb0wb.execute-api.us-east-1.amazonaws.com/Prod/send/', options1)
+                .then(response => response.json())
+                .then((responseJson) => {
+                    console.log("este es response " + responseJson.estado)
+
+
+
+                }).catch(error => console.log(error))
+
+        
+
+    }
+
+
     componentDidMount() {
         console.log("montado")
 
     }
 
 
-    /*
-        cambio() {
-            this.setState({
-                prueba: "melo bb"
-            })
-    
-            if (this.state.prueba !== "hola bb") {
-                this.download()
-            }
-    
-        }
-    
-    */
-
-    /*
-        QRGenerator(value) {
-    
-            if (value !== "hola bb") {
-                console.log("si  cambió" + this.state.prueba)
-                return <div className="HpQrcode" id="" >
-    
-                    <QRCode
-                        value={"" + this.state.prueba}
-                        size={200}
-                        level={'H'}
-                    />
-                </div >;
-    
-    
-            } else if (value == "hola bb") {
-                console.log("no cambio " + this.state.prueba)
-    
-                return <div className="HpQrcode" id="" >
-    
-                    <h1> Hola bb</h1>
-                </div >;
-            }
-        }
-    
-    */
-/*
-        download() {
-    
-    
-            console.log("Estado actual" + this.state.prueba)
-            const canvas = document.querySelector('.HpQrcode > canvas');
-            const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-            let downloadLink = document.createElement("a");
-            downloadLink.href = pngUrl;
-            downloadLink.download = "123456.png";
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-            console.log("Image", this.pngUrl)
-        }
- */
-
-/*
-    loader() {
-
-        /**timeout={30000} 
-
-        if (this.state.loader == false) {
-
-            return <div className="loader"></div>
-        } else {
-            return <div className="loader">
-                <Loader type="BallTriangle" color="#00BFFF" height={100} width={100} > </Loader>
-                <h1>Enviando información</h1>
-            </div>
-
-
-
-        }
-
-
-
-
-    }
-
-*/
+   
     render() {
 
         if(this.state.showDetails==false)
@@ -400,7 +388,7 @@ openDetails = () => {
                 <div>
                     
     
-    
+     <NotificationContainer></NotificationContainer>
                     <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-custom fixed-top">
                         <img src={logop} className="home-logo" alt="Logo" />
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -423,7 +411,7 @@ openDetails = () => {
                         <h2>We transform data into strategies</h2>
                         <img src={fondo} className="fondo" alt="Logo" />
     
-                        <form className="rigthform" onSubmit={this.sendFile}>
+                        <form className="rigthform" >
     
                             <div className="form-group row">
                                 <label for="inputCompany" className="col-sm-4 col-form-label"><h1>
@@ -463,7 +451,7 @@ openDetails = () => {
                             </div>
     
                             <div style={{display:"inline"}}></div>
-                            <button type="submit" className="btn btn-primary mb-2">Send Information</button>
+                            <button type="button" className="btn btn-primary mb-2" onClick={this.sendFile.bind(this)}> Send Information</button>
                             {this.state.loader ?(<Spinner  style={{marginLeft:"5%"}}color="primary" />):(<h1 style={{display:'none'}}>"HOLA"</h1>)}
                             
     
