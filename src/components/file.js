@@ -10,6 +10,8 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import Graphic from './graphics';
 
+import { Document, Page } from 'react-pdf';
+
 
 
 var CanvasJSReact = require('./canvasjs.react');
@@ -44,6 +46,8 @@ class File extends Component {
             showDetails:false,
             details:{'porCeldasVacias':0,'porFilasVacias':0,'numCeldasVacias':0,'numColVacias':0
             ,'numDatosCorr':0,'numDatosMixtos':0,'numFilasRepetidas':0,'texto':[ ],
+            numPages: null,
+            pageNumber: 1,
             open:false,}
 
 
@@ -71,7 +75,9 @@ openDetails = () => {
   };
 
 
-
+  onDocumentLoadSuccess = ({ numPages }) => {
+    this.setState({ numPages });
+  }
 
     toggleModal = value => {
         this.setState({
@@ -386,6 +392,14 @@ openDetails = () => {
             return (
 
                 <div>
+
+<Document
+          file={this.state.file}
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
+          <Page pageNumber={this.state.pageNumber} />
+        </Document>
+        <p>Page {this.state.pageNumber} of {this.state.numPages}</p>
                     
     
      <NotificationContainer></NotificationContainer>
